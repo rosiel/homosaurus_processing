@@ -19,6 +19,11 @@ This is the result of running homosaurus-process-related.py on homosaurus.jsonld
 An adaptation of Terry Reese's homosaurus_xml.xsl transform that accommodates an entire vocabulary dump, rather than an individual record. Set up a translation in MarcEdit following the steps in [his Youtube Video](https://www.youtube.com/watch?v=FJsdQI3pZPQ) but select this transform. Then use your translation to transform homosaurus-processed.jsonld to MARC Authority. 
 
 
+### homosaurus.mrc
+
+The result of running the above transform, in MARCEdit, on homosaurus-processed.jsonld. A set of MARC Authority records.
+
+
 ## Support
 
 Rosie Le Faive

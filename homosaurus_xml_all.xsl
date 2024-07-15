@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" 
-                xmlns:dc="http://purl.org/dc/elements/1.1/"
-                xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-                xmlns:skos="http://www.w3.org/2004/02/skos/core#"
-                xmlns="http://www.loc.gov/MARC21/slim" 
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns="http://www.loc.gov/MARC21/slim" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   
   <xsl:output method="xml" indent="yes"/>
   
-  <xsl:template match="records/record">
+  <xsl:template match="records">
     <collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
-      <xsl:apply-templates select="graph" mode="record"/>
+      <xsl:apply-templates select="record" mode="record"/>
     </collection>
   </xsl:template>
   
-  <xsl:template match="graph" mode="record">
+  <xsl:template match="record" mode="record">
     <record>
       <leader>00596nz  a2200217n  4500</leader>
       <xsl:variable name="mod_date">
@@ -32,7 +32,7 @@
       <controlfield tag="008">
         <xsl:value-of select="$mod_date"/>|||anznnbab||||||||||||||a|||||||d
       </controlfield>
-
+      
       <xsl:if test="identifier">
         <datafield tag="024" ind1="8" ind2=" ">
           <subfield code="a">
@@ -43,7 +43,7 @@
           </subfield>
         </datafield>
       </xsl:if>
-
+      
       <!--***************************************************************
           * To add your cataloging institution code to the 040
           * use the <subfield code="[yoursubfied">[your data]</subfield>
@@ -57,10 +57,10 @@
           *****************************************************************
       -->
       <datafield tag="040" ind1=" " ind2 = " ">
-         <subfield code="f">homosaurus</subfield>
+        <subfield code="f">homosaurus</subfield>
       </datafield>
       
-
+      
       <!--**************************************************************
           * At this point (4/3/2021), the vocabulary does not provide a 
           * conceptual definition between topical vocab elements versus
@@ -79,7 +79,7 @@
           </subfield>
         </datafield>
       </xsl:if>
-
+      
       <xsl:for-each select="altLabel">
         <datafield tag="450" ind1=" " ind2=" ">
           <subfield code="a">
@@ -88,6 +88,8 @@
         </datafield>
       </xsl:for-each>
       
+      <!-- Ignore hasTopConcept as it links each term to itself. -->
+      <!-- 
       <xsl:for-each select="hasTopConcept">
         <datafield tag="550" ind1=" " ind2=" ">
           <xsl:if test="./prefLabel">
@@ -100,7 +102,8 @@
           </subfield>
         </datafield>
       </xsl:for-each>
-
+      -->
+      
       <xsl:for-each select="broader">
         <datafield tag="550" ind1=" " ind2=" ">
           <xsl:if test="./prefLabel">
@@ -113,15 +116,15 @@
           </subfield>
         </datafield>
       </xsl:for-each>
-
+      
       <xsl:for-each select="comment">
         <datafield tag="680" ind1=" " ind2=" ">
           <subfield code="a">
-            <xsl:value-of select="." />
+            <xsl:value-of select="normalize-space(.)" />
           </subfield>          
         </datafield>
       </xsl:for-each>
-
+      
     </record>
   </xsl:template>
 </xsl:stylesheet>
